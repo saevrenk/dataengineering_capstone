@@ -1,3 +1,4 @@
+import os
 import mysql.connector as db
 from mapping import column_map
 from pyspark.sql.functions import (
@@ -11,6 +12,9 @@ from pyspark.sql.functions import (
     lit,
 )
 
+# authentication for DB connection:
+mysql_pwd = os.environ.get("mysql_root_p")
+
 
 def get_df_size(sparkdf):
     """Return the dimensions of a spark dataframe"""
@@ -18,8 +22,8 @@ def get_df_size(sparkdf):
 
 
 def check_database():
-    # Create a database called "creditcard_capstone" if does not exist
-    mysql = db.connect(user="root", password="")
+    """Create a database called "creditcard_capstone" if does not exist"""
+    mysql = db.connect(user="root", password=mysql_pwd)
     cursor = mysql.cursor()
     cursor.execute("SHOW DATABASES;")
     dbs = cursor.fetchall()
@@ -34,6 +38,7 @@ def check_database():
 
 
 def transform(df, data_name):
+    """Transform data according to the mapping.column_map specifications"""
     map_dict = column_map[data_name]
     # general type casting
     for tup in map_dict:

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import requests
 import pandas as pd
 from functions import get_df_size, transform, check_database
@@ -15,6 +16,8 @@ spark = (
     )
     .getOrCreate()
 )
+# authentication for DB connection
+mysql_pwd = os.environ.get("mysql_root_p")
 
 # EXTRACT
 
@@ -54,17 +57,17 @@ check_database()
 # LOAD
 print("===> Loading the dataframes to the creditcard_capstone database.")
 
-for dfname, tab in table_names.items():
+for dfname, tab_name in table_names.items():
     eval(
         f'{dfname}.write.format("jdbc")\
         .mode("overwrite")\
         .option( "url", "jdbc:mysql://localhost:3306/creditcard_capstone")\
-        .option("dbtable", "creditcard_capstone.{tab}")\
+        .option("dbtable", "creditcard_capstone.{tab_name}")\
         .option("user", "root")\
-        .option("password", "")\
+        .option("password", "{mysql_pwd}")\
         .option("driver", "com.mysql.cj.jdbc.Driver")\
         .option("createTableColumnTypes", "{column_types_mysql[dfname]}").save()'
     )
-    print(f"===> Uploaded {dfname} to {tab}")
+    print(f"===> Uploaded {dfname} to {tab_name}")
 
 print("===> Finished ETL successfully.")
