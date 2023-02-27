@@ -7,7 +7,7 @@ This project consists of three parts:
 
 1. ETL:
 - Create an ETL pipeline to extract data from Json files (local files and files from Rest APIs)
-- Transform data according to specific mappings 
+- Transform data according to specific mappings (mapping.py)
 - Create a MySQL database and load data into tables
 
 2. Application Front-End:
@@ -19,7 +19,7 @@ This project consists of three parts:
 ```
 pip install -r requirements.txt
 python etl.py
-python analysis.py
+python analysis_frontend.py
 ```
 ### Other Requirements:
 1. MySQL database root access requires "mysql_root_p" environment variable to be set
