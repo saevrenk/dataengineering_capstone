@@ -1,7 +1,7 @@
 # Data Engineering for Credit Card Data
 
 ## An ETL, analysis and visualization project
-[Project overview](./project_overview.jpeg)
+[Project overview](./images/project_overview.jpeg)
 ### The project requirements:
 * ETL:
 1. Create an ETL pipeline to extract data from Json files (local files and files from Rest APIs)
