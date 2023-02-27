@@ -7,7 +7,6 @@ import pyinputplus as pyip
 from pyspark.sql.functions import (
     concat,
     lpad,
-    length,
     regexp_replace,
     initcap,
     lower,
