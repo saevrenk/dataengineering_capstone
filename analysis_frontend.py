@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 
 import os
-import re
-import mysql.connector
 import pyinputplus as pyip
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import regexp_replace, regexp_extract, col
+from pyspark.sql.functions import regexp_replace
 from functions import (
     transaction_by_customer,
     get_val_trans_type,
@@ -115,15 +113,27 @@ while main_menu:
             if submenu == cust_options[0]:
                 query, columns = get_cust_info()
                 dfnew = spark.sql(query)
-                # mask SSN
-                dfnew = dfnew.withColumn(
-                    "SSN_masked",
-                    regexp_replace(dfnew["SSN"], r"(\d{5})(\d{4})", "*****$2"),
-                )
-                dfnew.select(columns).show()
+                if dfnew.isEmpty():
+                    print("Customer not found in database")
+                else:
+                    # mask SSN
+                    dfnew = dfnew.withColumn(
+                        "SSN_masked",
+                        regexp_replace(dfnew["SSN"], r"(\d{5})(\d{4})", "*****$2"),
+                    )
+                    dfnew.select(columns).show()
             elif submenu == cust_options[1]:
-                ssn, changes = modify_cust_record()
-                mysql_updater(changes)
+                ssn = pyip.inputRegex(
+                    r"^\d{9}$",
+                    prompt="Please enter the SSN for the record you wish to update: ",
+                )
+                # check if ssn exists in the database
+                df_ssn = spark.sql(f"SELECT * FROM customer_tb WHERE SSN = '{ssn}';")
+                if df_ssn.isEmpty():
+                    print("Customer with the given SSN not found in database")
+                else:
+                    changes = modify_cust_record(ssn)
+                    mysql_updater(ssn, changes)
             elif submenu == cust_options[2]:
                 query = generate_bill()
                 spark.sql(query).show()
@@ -135,3 +145,6 @@ while main_menu:
             elif submenu == cust_options[5]:
                 sub_menu = False
                 main_menu = False
+
+    elif menu == "Exit":
+        break

@@ -20,7 +20,7 @@ mysql_pwd = os.environ.get("mysql_root_p")
 
 def get_df_size(sparkdf):
     """Return the dimensions of a spark dataframe"""
-    return (sparkdf.count(), len(sparkdf.columns))
+    return str((sparkdf.count(), len(sparkdf.columns)))
 
 
 def check_database():
@@ -279,10 +279,7 @@ def set_cust_email():
     return changes
 
 
-def modify_cust_record():
-    ssn = pyip.inputRegex(
-        r"\d{9}", prompt="Please enter the SSN for the record you wish to update: "
-    )
+def modify_cust_record(ssn):
     print(f"You are going to update information for SSN: *****{ssn[-4:]}")
     updates = ["Name", "Credit Card No", "Address", "Phone Number", "Email"]
     choice = pyip.inputMenu(updates, numbered=True)
@@ -304,10 +301,10 @@ def modify_cust_record():
 
     changes = changes + f"WHERE SSN = '{ssn}';"
 
-    return ssn, changes
+    return changes
 
 
-def mysql_updater(sql_update):
+def mysql_updater(ssn, sql_update):
     try:
         mydb = db.connect(
             host="localhost",
@@ -318,9 +315,12 @@ def mysql_updater(sql_update):
         cursor = mydb.cursor()
         cursor.execute(sql_update)
         mydb.commit()
+        update_timestamp = f"UPDATE CDW_SAPP_CUSTOMER SET LAST_UPDATED = CURRENT_TIMESTAMP() WHERE SSN = '{ssn}';"
+        cursor.execute(update_timestamp)
+        mydb.commit()
         print(f"===> {cursor.rowcount} record updated")
     except Exception as e:
-        print("Mysql update error! ", e)
+        print("MySQL update failed:", e)
 
 
 def generate_bill():
@@ -334,7 +334,7 @@ def generate_bill():
     date_string = year + month.zfill(2)
 
     q = (
-        "SELECT CUST_CC_NO, TIMEID, SUM(TRANSACTION_VALUE) as Daily_Total"
+        "SELECT CUST_CC_NO, TIMEID, SUM(TRANSACTION_VALUE) as Daily_Total "
         "FROM credit_tb "
         f"WHERE CUST_CC_NO = '{credit_card_no}' "
         f"AND TIMEID LIKE '{date_string}%' "
@@ -344,7 +344,7 @@ def generate_bill():
 
 
 def get_trans_interval():
-    ssn = pyip.inputRegex(r"\d{9}", prompt="Please enter the SSN: ")
+    ssn = pyip.inputRegex(r"^\d{9}$", prompt="Please enter the SSN: ")
     date1 = pyip.inputInt("Enter beginning date YYYYMMDD: ", min=20000101, max=20230101)
     date2 = pyip.inputInt("Enter beginning date YYYYMMDD: ", min=20000101, max=20230101)
     q = (

@@ -2,6 +2,7 @@
 
 import os
 import requests
+import configparser
 import pandas as pd
 from functions import get_df_size, transform, check_database
 from mapping import table_names, column_types_mysql
@@ -16,6 +17,14 @@ spark = (
     )
     .getOrCreate()
 )
+# read data sources from config.ini
+config = configparser.ConfigParser()
+config.read(os.path.dirname(__file__) + "/config.ini")
+credit_source = config.get("CREDIT", "data")
+branch_source = config.get("BRANCH", "data")
+customer_source = config.get("CUSTOMER", "data")
+loan_source = config.get("LOAN", "url")
+
 # authentication for DB connection
 mysql_pwd = os.environ.get("mysql_root_p")
 
@@ -23,13 +32,13 @@ mysql_pwd = os.environ.get("mysql_root_p")
 
 # Read JSON files
 print("===> Reading JSON files")
-branch = spark.read.json("./Credit Card Dataset/cdw_sapp_branch.json")
-credit = spark.read.json("./Credit Card Dataset/cdw_sapp_credit.json")
-customer = spark.read.json("./Credit Card Dataset/cdw_sapp_custmer.json")
+branch = spark.read.json(branch_source)
+credit = spark.read.json(credit_source)
+customer = spark.read.json(customer_source)
 
 # Loan application API
 print("===> Reading loan data from rest API")
-url = "https://raw.githubusercontent.com/platformps/LoanDataset/main/loan_data.json"
+url = loan_source
 try:
     response = requests.get(url)
 except requests.exceptions.RequestException as e:
@@ -38,10 +47,17 @@ print(f"===> Status code for the API connection is {response}")
 pandas_df = pd.DataFrame(response.json())
 loan = spark.createDataFrame(pandas_df)
 
-assert get_df_size(credit) == (46694, 9), "credit dataframe failed"
-assert get_df_size(branch) == (115, 8), "branch dataframe failed"
-assert get_df_size(customer) == (952, 14), "customer dataframe failed"
-assert get_df_size(loan) == (511, 10), "loan dataframe failed"
+assert get_df_size(credit) == config.get(
+    "CREDIT", "size"
+), "credit dataframe reading failed"
+assert get_df_size(branch) == config.get(
+    "BRANCH", "size"
+), "branch dataframe reading failed"
+assert get_df_size(customer) == config.get(
+    "CUSTOMER", "size"
+), "customer dataframe reading failed"
+assert get_df_size(loan) == config.get("LOAN", "size"), "loan dataframe reading failed"
+
 print("===> Finished data extraction successfully.")
 
 # TRANSFORM
