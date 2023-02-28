@@ -43,9 +43,9 @@ python analysis_frontend.py
 2. For the first menu version I used input(). This created a more complicated interface; using [pyinputplus](https://pyinputplus.readthedocs.io/en/latest/) improved the interface significantly.
 
 ### Visualization 
-Ianswered the following inquiries using SparkSQL, pandas and plotly libraries.
+I answered the following inquiries using SparkSQL, pandas and plotly libraries.
 
-##### Req. 3 Data Analysis and Visualization
+#### Req. 3 Data Analysis and Visualization
 1. Find and plot which transaction type has a high rate of transactions.
 
 ![3_1](./images/3.1.png)
@@ -58,7 +58,7 @@ Ianswered the following inquiries using SparkSQL, pandas and plotly libraries.
 
 ![3_3](./images/3.3.png)
 
-##### Req.5 Data Analysis and Visualization for Loan Application
+#### Req.5 Data Analysis and Visualization for Loan Application
 
 1.   Find and plot the percentage of applications approved for self-employed applicants.
 
