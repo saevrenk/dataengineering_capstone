@@ -5,15 +5,28 @@
 
 This project consists of three parts:
 
-1. ETL:
-- Create an ETL pipeline to extract data from Json files (local files and files from Rest APIs)
-- Transform data according to specific mappings (mapping.py)
+1. Create an ETL pipeline:
+- Extract data from JSON files (local files and Rest APIs)
+- Transform data according to specific [mappings](https://docs.google.com/spreadsheets/d/1t8UxBrUV6dxx0pM1VIIGZpSf4IKbzjdJ/edit#gid=1823293337)
 - Create a MySQL database and load data into tables
 
 2. Application Front-End:
 - Write python front-end to query MySQL database and modify and update existing records
 
 3. Analyze and visualize data 
+
+### What is in this repo:
+- **config.ini**: The file with the data source and size information, parsed by etl.py.
+
+- **mapping.py**: The file with the dictionaries for data transformations.
+
+- **etl.py**: The python code to extract and transform data, and create a database "creditcard_capstone" and load data into tables.
+
+- **analysis_frontend.py**: Front-end to interact with the user to run queries and update records.
+
+- **functions.py**: The collection of functions to support the ETL and interactive menus.
+
+- **/notebooks/*.ipynb**: Notebooks for setup, test and visualizaitons.
 
 ### How to run:
 ```
@@ -22,12 +35,17 @@ python etl.py
 python analysis_frontend.py
 ```
 ### Other Requirements:
-1. MySQL database root access requires "mysql_root_p" environment variable to be set
+1. MySQL database root password needs to be set as "mysql_root_p" environment variable 
 2. Python>=3.0
 
-### Visualization answered the following inquiries using SparkSQL, pandas and plotly libraries.
+### Technical Challenges
+1. Spark SQL doesn't support UPDATE statements, so instead for the updates I used "mysql.connector", other than that almost everything is done with pyspark. Except, in visualizations pandas has the advantage, so I used sparkDF.toPandas() to work with a pandas dataframe.
+2. For the first menu version I used input(). This created a more complicated interface; using [pyinputplus](https://pyinputplus.readthedocs.io/en/latest/) improved the interface significantly.
 
-### Req. 3 Data Analysis and Visualization
+### Visualization 
+Ianswered the following inquiries using SparkSQL, pandas and plotly libraries.
+
+##### Req. 3 Data Analysis and Visualization
 1. Find and plot which transaction type has a high rate of transactions.
 
 ![3_1](./images/3.1.png)
@@ -40,7 +58,7 @@ python analysis_frontend.py
 
 ![3_3](./images/3.3.png)
 
-### Req.5 Data Analysis and Visualization for Loan Application
+##### Req.5 Data Analysis and Visualization for Loan Application
 
 1.   Find and plot the percentage of applications approved for self-employed applicants.
 
