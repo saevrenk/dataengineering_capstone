@@ -1,4 +1,4 @@
-# table names for mysql load
+# table names for spark -> mysql database load
 table_names = {
     "credit_transformed": "CDW_SAPP_CREDIT_CARD",
     "branch_transformed": "CDW_SAPP_BRANCH",
@@ -8,6 +8,7 @@ table_names = {
 
 # Mapping dictionaries:
 # tuple: (old_col, new_col, type)
+# Mapping for file -> sparkDF transformations
 column_map = {
     "credit": [
         ("CREDIT_CARD_NO", "CUST_CC_NO", "string"),
@@ -44,6 +45,7 @@ column_map = {
         ("LAST_UPDATED", "LAST_UPDATED", "timestamp"),
     ],
 }
+# Mapping for SparkDF -> MySQL variable types
 column_types_mysql = {
     "customer_transformed": "SSN INT, "
     "FIRST_NAME VARCHAR(50), "

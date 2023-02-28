@@ -18,7 +18,12 @@ This project consists of three parts:
 ### What is in this repo:
 - **config.ini**: The file with the data source and size information, parsed by etl.py.
 
-- **mapping.py**: The file with the dictionaries for data transformations.
+- **mapping.py**: The file with the dictionaries for data transformations. Includes dictionaries for the below mappings:
+    -   {JSON file} --> {SparkDF} transformations 
+
+    -   {SparkDF variable types} --> {MySQL variable types}
+
+    -   {SparkSQL temp table name} --> {MySQL database table name}
 
 - **etl.py**: The python code to extract and transform data, and create a database "creditcard_capstone" and load data into tables.
 
