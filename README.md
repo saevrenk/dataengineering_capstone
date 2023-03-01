@@ -81,3 +81,5 @@ I answered the following inquiries using SparkSQL, pandas and plotly libraries.
 4.    Find and plot which branch processed the highest total dollar value of healthcare transactions.
 
 ![5_4](./images/5.4.png)
+
+See additional visualizations at Tableau Public [here](https://public.tableau.com/app/profile/sue4897/viz/test1_loan/Dashboard1) and [here](https://public.tableau.com/app/profile/sue4897/viz/test2_credit/dashboard_Req3)
