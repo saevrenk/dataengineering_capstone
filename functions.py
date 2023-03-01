@@ -15,7 +15,8 @@ from pyspark.sql.functions import (
 )
 
 # authentication for DB connection:
-mysql_pwd = os.environ.get("mysql_root_p")
+mysql_pwd = os.environ.get("mysql_pwd")
+mysql_user = os.environ.get("mysql_user")
 
 
 def get_df_size(sparkdf):
@@ -25,7 +26,7 @@ def get_df_size(sparkdf):
 
 def check_database():
     """Create a database called "creditcard_capstone" if does not exist"""
-    mysql = db.connect(user="root", password=mysql_pwd)
+    mysql = db.connect(user=mysql_user, password=mysql_pwd)
     cursor = mysql.cursor()
     cursor.execute("SHOW DATABASES;")
     dbs = cursor.fetchall()
@@ -246,7 +247,7 @@ def set_cust_address():
     state = pyip.inputRegex(
         r"^[A-Za-z]{2}$", prompt="Enter state abbrviation: "
     ).upper()
-    country = pyip.inputRegex(r"^[A-Za-z]{3}", prompt="Enter country name: ").title()
+    country = pyip.inputRegex(r"^[A-Za-z]{3}+", prompt="Enter country name: ").title()
     zipcode = pyip.inputInt("Enter zipcode: ")
 
     changes = (
@@ -308,7 +309,7 @@ def mysql_updater(ssn, sql_update):
     try:
         mydb = db.connect(
             host="localhost",
-            user="root",
+            user=mysql_user,
             password=mysql_pwd,
             database="creditcard_capstone",
         )

@@ -29,7 +29,8 @@ spark = (
 )
 
 # get password for DB connection
-mysql_pwd = os.environ.get("mysql_root_p")
+mysql_pwd = os.environ.get("mysql_pwd")
+mysql_user = os.environ.get("mysql_user")
 
 # EXTRACT
 
@@ -82,7 +83,7 @@ for dfname, tab_name in table_names.items():
         .mode("overwrite")\
         .option( "url", "jdbc:mysql://localhost:3306/creditcard_capstone")\
         .option("dbtable", "creditcard_capstone.{tab_name}")\
-        .option("user", "root")\
+        .option("user", "{mysql_user}")\
         .option("password", "{mysql_pwd}")\
         .option("driver", "com.mysql.cj.jdbc.Driver")\
         .option("createTableColumnTypes", "{column_types_mysql[dfname]}").save()'

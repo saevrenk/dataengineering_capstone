@@ -21,7 +21,8 @@ config = configparser.ConfigParser()
 config.read(os.path.dirname(__file__) + "/config.ini")
 
 # get password for DB connection
-mysql_pwd = os.environ.get("mysql_root_p")
+mysql_pwd = os.environ.get("mysql_pwd")
+mysql_user = os.environ.get("mysql_user")
 
 # Start SPARK session:
 spark = (
@@ -38,7 +39,7 @@ credit = spark.read.jdbc(
     "jdbc:mysql://localhost:3306/creditcard_capstone",
     "CDW_SAPP_CREDIT_CARD",
     properties={
-        "user": "root",
+        "user": mysql_user,
         "password": mysql_pwd,
         "driver": "com.mysql.cj.jdbc.Driver",
     },
@@ -48,7 +49,7 @@ branch = spark.read.jdbc(
     "jdbc:mysql://localhost:3306/creditcard_capstone",
     "CDW_SAPP_BRANCH",
     properties={
-        "user": "root",
+        "user": mysql_user,
         "password": mysql_pwd,
         "driver": "com.mysql.cj.jdbc.Driver",
     },
@@ -58,7 +59,7 @@ customer = spark.read.jdbc(
     "jdbc:mysql://localhost:3306/creditcard_capstone",
     "CDW_SAPP_CUSTOMER",
     properties={
-        "user": "root",
+        "user": mysql_user,
         "password": mysql_pwd,
         "driver": "com.mysql.cj.jdbc.Driver",
     },

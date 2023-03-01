@@ -67,7 +67,6 @@ I answered the following inquiries using SparkSQL, pandas and plotly libraries.
 
 1.   Find and plot the percentage of applications approved for self-employed applicants.
 
-![5_1a](./images/5.1.a.png)
 ![5_1b](./images/5.1.b.png)
 
 2.    Find the percentage of rejection for married male applicants.
