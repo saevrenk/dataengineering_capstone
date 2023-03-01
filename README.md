@@ -31,7 +31,7 @@ This project consists of three parts:
 
 - **functions.py**: The collection of functions to support the ETL and interactive menus.
 
-- **/notebooks/*.ipynb**: Notebooks for setup, test and visualizaitons.
+- **/notebooks/*.ipynb**: Notebooks for setup, test and visualizations.
 
 ### How to run:
 ```
@@ -44,8 +44,8 @@ python analysis_frontend.py
 2. Python>=3.0
 
 ### Technical Challenges
-1. Spark SQL doesn't support UPDATE statements, so instead for the updates I used "mysql.connector", other than that almost everything is done with pyspark. Except, in visualizations pandas has the advantage, so I used sparkDF.toPandas() to work with a pandas dataframe.
-2. For the first menu version I used input(). This created a more complicated interface; using [pyinputplus](https://pyinputplus.readthedocs.io/en/latest/) improved the interface significantly.
+1. Spark SQL doesn't support UPDATE statements, so instead for the updates I used "mysql.connector", other than that almost everything is done with PySpark. Except, in visualizations, Pandas has the advantage, so I used sparkDF.toPandas() to work with Pandas dataframes.
+2. For the first menu version I used input(). This created a more complicated interface; using [pyinputplus](https://pyinputplus.readthedocs.io/en/latest/) module improved the interface significantly.
 
 ### Visualization 
 I answered the following inquiries using SparkSQL, pandas and plotly libraries.

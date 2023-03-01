@@ -9,23 +9,26 @@ from mapping import table_names, column_types_mysql
 
 from pyspark.sql import SparkSession
 
-spark = (
-    SparkSession.builder.appName("capstone_etl")
-    .config(
-        "spark.jars",
-        "/opt/homebrew/Cellar/apache-spark/3.3.1/libexec/jars/mysql-connector-j-8.0.32.jar",
-    )
-    .getOrCreate()
-)
-# read data sources from config.ini
+# parse config.ini
 config = configparser.ConfigParser()
 config.read(os.path.dirname(__file__) + "/config.ini")
+
+# read data sources from config.ini
 credit_source = config.get("CREDIT", "data")
 branch_source = config.get("BRANCH", "data")
 customer_source = config.get("CUSTOMER", "data")
 loan_source = config.get("LOAN", "url")
 
-# authentication for DB connection
+spark = (
+    SparkSession.builder.appName("capstone_etl")
+    .config(
+        "spark.jars",
+        config.get("JARS", "connector"),
+    )
+    .getOrCreate()
+)
+
+# get password for DB connection
 mysql_pwd = os.environ.get("mysql_root_p")
 
 # EXTRACT

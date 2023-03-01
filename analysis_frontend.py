@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import configparser
 import pyinputplus as pyip
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import regexp_replace
@@ -15,6 +16,11 @@ from functions import (
     get_trans_interval,
 )
 
+# parse config.ini
+config = configparser.ConfigParser()
+config.read(os.path.dirname(__file__) + "/config.ini")
+
+# get password for DB connection
 mysql_pwd = os.environ.get("mysql_root_p")
 
 # Start SPARK session:
@@ -22,7 +28,7 @@ spark = (
     SparkSession.builder.appName("capstone_analysis")
     .config(
         "spark.jars",
-        "/opt/homebrew/Cellar/apache-spark/3.3.1/libexec/jars/mysql-connector-j-8.0.32.jar",
+        config.get("JARS", "connector"),
     )
     .getOrCreate()
 )
