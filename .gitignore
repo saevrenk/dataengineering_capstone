@@ -1,2 +1,4 @@
 .DS_Store
 ./Credit Card Dataset/*csv
+.ipynb_checkpoints
+./notebooks/.ipynb_checkpoints

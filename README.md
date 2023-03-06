@@ -31,7 +31,7 @@ This project consists of three parts:
 
 - **functions.py**: The collection of functions to support the ETL and interactive menus.
 
-- **/notebooks/*.ipynb**: Notebooks for setup, test and visualizations.
+- **/notebooks/capstone_visualization.ipynb**: Notebook for visualizations.
 
 ### How to run:
 ```
@@ -47,6 +47,7 @@ python analysis_frontend.py
 1. Spark SQL doesn't support UPDATE statements, so instead for the updates I used "mysql.connector", other than that almost everything is done with PySpark. Except, in visualizations, Pandas has the advantage, so I used sparkDF.toPandas() to work with Pandas dataframes.
 2. For the first menu version I used input(). This created a more complicated interface; using [pyinputplus](https://pyinputplus.readthedocs.io/en/latest/) module improved the interface significantly.
 
+<!--
 ### Visualization 
 I answered the following inquiries using SparkSQL, pandas and plotly libraries.
 
@@ -82,3 +83,4 @@ I answered the following inquiries using SparkSQL, pandas and plotly libraries.
 ![5_4](./images/5.4.png)
 
 See additional visualizations at Tableau Public [here](https://public.tableau.com/app/profile/sue4897/viz/test1_loan/Dashboard1) and [here](https://public.tableau.com/app/profile/sue4897/viz/test2_credit/dashboard_Req3)
+--->
